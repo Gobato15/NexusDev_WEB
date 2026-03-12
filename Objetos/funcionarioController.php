@@ -20,5 +20,9 @@ class funcionarioController{
         return $this->Funcionario>pesquisaFuncionario($CPF);
     }
 
+    public function localizarfuncionario($id){
+        return $this->Funcionario->buscafuncionario($id);
+
+    }
 }
 
