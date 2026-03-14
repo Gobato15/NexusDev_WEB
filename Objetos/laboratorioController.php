@@ -64,8 +64,6 @@ public function localizarLaboratorio($cnpj){
         if($this->laboratorio->excluir($cnpj)){
             header("location: index.php");
             exit();
-        }else{
-            echo"Erro ao excluir";
         }
     }
 

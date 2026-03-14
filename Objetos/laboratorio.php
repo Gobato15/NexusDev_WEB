@@ -80,7 +80,6 @@ public function excluir($cnpj){
         return $resultado->fetch(PDO::FETCH_ASSOC);
     }
 
-    // ADICIONE ESTES DOIS MÉTODOS AQUI:
 
     public function cnpjExiste($cnpj){
         $sql = "SELECT COUNT(*) FROM laboratorio WHERE CNPJ_Lab = :cnpj";
@@ -103,5 +102,4 @@ public function excluir($cnpj){
         $stmt->bindParam(":cnpj",      $this->cnpj,      PDO::PARAM_STR);
         return $stmt->execute();
     }
-    // <- fechamento da classe
 }
