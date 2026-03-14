@@ -21,7 +21,7 @@ class compraController
     }
 
     public function pesquisaCompra($NotaFiscal_Entrada){
-        return $this->compra->pesquisarVenda($NotaFiscal_Entrada);
+        return $this->compra->pesquisarCompra($NotaFiscal_Entrada);
     }
 
     public function cadastrarCompra($dados){
