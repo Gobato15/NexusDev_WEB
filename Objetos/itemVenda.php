@@ -83,13 +83,13 @@ Class itemVenda{
         }
     }
 
-    public function buscaItemVenda($Cod_ItemVenda)
+    public function buscaItemVenda($NotaFiscal_Saida)
     {
-        $sql = "SELECT * FROM item_venda WHERE Cod_ItemVenda = :Cod_ItemVenda";
+        $sql = "SELECT * FROM item_venda WHERE NotaFiscal_Saida = :NotaFiscal_Saida";
         $resultado = $this->bd->prepare($sql);
-        $resultado->bindParam(":Cod_ItemVenda", Cod_ItemVenda);
+        $resultado->bindParam(":NotaFiscal_Saida", $NotaFiscal_Saida);
         $resultado->execute();
 
-        return $resultado->fetch(PDO::FETCH_OBJ);
+        return $resultado->fetchAll(PDO::FETCH_OBJ);
     }
 }

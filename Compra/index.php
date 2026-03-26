@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 <body>
 
-<h1>SENAC Rio Claro</h1>
+<h1>Compras</h1>
 
 <a href="cadastrarCompra.php">Cadastrar Compra</a>
 
@@ -60,16 +60,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     <?php if($a) : ?>
         <tr>
-            <td><?= $a->NotaFiscal_Entrada ?></td>
-            <td><?= $a->Valor_Total ?></td>
-            <td><?= $a->Data_Compra ?></td>
-            <td><?= $a->CPF ?></td>
-            <td><?= $a->CNPJ_Lab ?></td>
+            <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $a->NotaFiscal_Entrada ?>"><?= $a->NotaFiscal_Entrada ?></a></td>
+            <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $a->NotaFiscal_Entrada ?>"><?= $a->Valor_Total ?></a></td>
+            <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $a->NotaFiscal_Entrada ?>"><?= $a->Data_Compra ?></a></td>
+            <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $a->NotaFiscal_Entrada ?>"><?= $a->CPF ?></a></td>
+            <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $a->NotaFiscal_Entrada ?>"><?= $a->CNPJ_Lab ?></a></td>
         </tr>
     <?php endif; ?>
 </table>
 
-<h2>Compras Cadastradas</h2>
+<h2>Compras cadastradas</h2>
 
 <table>
     <tr>
@@ -78,23 +78,20 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         <td>Data Compra</td>
         <td>CPF</td>
         <td>CNPJ Laboratório</td>
-        <td>Ações</td>
     </tr>
 
     <?php if($compras) : ?>
         <?php foreach($compras as $compra) : ?>
             <tr>
-                <td><?= $compra->NotaFiscal_Entrada ?></td>
-                <td><?= $compra->Valor_Total ?></td>
-                <td><?= $compra->Data_Compra ?></td>
-                <td><?= $compra->CPF ?></td>
-                <td><?= $compra->CNPJ_Lab ?></td>
-                <td>
-                    <a href="atualizaCompra.php?alterar=<?= $compra->NotaFiscal_Entrada ?>">Alterar</a>
-                </td>
+                <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $compra->NotaFiscal_Entrada ?>"><?= $compra->NotaFiscal_Entrada ?></a></td>
+                <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $compra->NotaFiscal_Entrada ?>"><?= $compra->Valor_Total ?></a></td>
+                <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $compra->NotaFiscal_Entrada ?>"><?= $compra->Data_Compra ?></a></td>
+                <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $compra->NotaFiscal_Entrada ?>"><?= $compra->CPF ?></a></td>
+                <td><a href="../Itens/index.php?notaFiscal_Entrada=<?= $compra->NotaFiscal_Entrada ?>"><?= $compra->CNPJ_Lab ?></a></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>
+
 </table>
 
 </body>

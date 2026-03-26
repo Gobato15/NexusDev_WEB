@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 <body>
 
-<h1>SENAC Rio Claro</h1>
+<h1>Vendas</h1>
 
 <a href="cadastro.php">Cadastrar Venda</a>
 
@@ -62,11 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     <?php if($a) : ?>
 
         <tr>
-            <td><?= $a->NotaFiscal_Saida ?></td>
-            <td><?= $a->Data_Venda ?></td>
-            <td><?= $a->Valor_Venda ?></td>
-            <td><?= $a->CNPJ_Drog ?></td>
-            <td><?= $a->CPF ?></td>
+
+            <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $a->NotaFiscal_Saida ?>"><?= $a->NotaFiscal_Saida ?></a></td>
+            <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $a->NotaFiscal_Saida ?>"><?= $a->Data_Venda ?></a></td>
+            <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $a->NotaFiscal_Saida ?>"><?= $a->Valor_Venda ?></a></td>
+            <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $a->NotaFiscal_Saida ?>"><?= $a->CNPJ_Drog ?></a></td>
+            <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $a->NotaFiscal_Saida ?>"><?= $a->CPF ?></a></td>
+
         </tr>
 
     <?php endif; ?>
@@ -83,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         <td>Valor</td>
         <td>CNPJ Drogaria</td>
         <td>CPF</td>
-        <td>Ações</td>
     </tr>
 
     <?php if($vendas) : ?>
@@ -91,15 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
             <tr>
 
-                <td><?= $venda->NotaFiscal_Saida ?></td>
-                <td><?= $venda->Data_Venda ?></td>
-                <td><?= $venda->Valor_Venda ?></td>
-                <td><?= $venda->CNPJ_Drog ?></td>
-                <td><?= $venda->CPF ?></td>
-
-                <td>
-                    <a href="atualizarVenda.php?alterar=<?= $venda->NotaFiscal_Saida ?>">Alterar</a>
-                </td>
+                <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $venda->NotaFiscal_Saida ?>"><?= $venda->NotaFiscal_Saida ?></a></td>
+                <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $venda->NotaFiscal_Saida ?>"><?= $venda->Data_Venda ?></a></td>
+                <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $venda->NotaFiscal_Saida ?>"><?= $venda->Valor_Venda ?></a></td>
+                <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $venda->NotaFiscal_Saida ?>"><?= $venda->CNPJ_Drog ?></a></td>
+                <td><a href="../ItemVenda/index.php?notaFiscal_Saida=<?= $venda->NotaFiscal_Saida ?>"><?= $venda->CPF ?></a></td>
 
             </tr>
 
