@@ -1,7 +1,6 @@
 <?php
-
-include_once "../configs/database.php";
-include_once "funcionario.php";
+include_once __DIR__ . "/../configs/database.php";
+include_once __DIR__ . "/funcionario.php"; // ajuste conforme onde o arquivo está
 
 class FuncionarioController
 {
@@ -153,9 +152,9 @@ class FuncionarioController
         return false;
     }
 
-    public function login($login, $senha)
+    public function login($email, $senha)
     {
-        $this->Funcionario->login = $login;
+        $this->Funcionario->email = $email;
         $this->Funcionario->senha = $senha;
         return $this->Funcionario->login();
     }

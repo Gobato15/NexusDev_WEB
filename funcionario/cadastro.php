@@ -1,5 +1,6 @@
 <?php
 include_once("../Objetos/funcionarioController.php");
+
 session_start();
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);

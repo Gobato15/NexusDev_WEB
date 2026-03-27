@@ -10,7 +10,7 @@ class Funcionario
     public $cep;
     public $foto;
     public $numero;
-    
+
     public $telefone;
     private $bd;
 
@@ -54,18 +54,17 @@ class Funcionario
         $stmt = $this->bd->prepare($query);
 
         $stmt->bindParam(":cpf", $this->CPF, PDO::PARAM_STR);
-        $stmt->bindParam(":nome", $this->nome , PDO::PARAM_STR);
-        $stmt->bindParam(":email", $this->email , PDO::PARAM_STR);
-        $stmt->bindParam(":senha", $senha_hash,  PDO::PARAM_STR);
-        $stmt->bindParam(":cargo", $this->funcao , PDO::PARAM_STR);
-        $stmt->bindParam(":telefone", $this->telefone , PDO::PARAM_STR);
-        $stmt->bindParam(":cep", $this->cep ,PDO::PARAM_STR);
-        $stmt->bindParam(":foto", $this->foto , PDO::PARAM_STR);
-        $stmt->bindParam(":numero",$this->numero , PDO::PARAM_INT);
+        $stmt->bindParam(":nome", $this->nome, PDO::PARAM_STR);
+        $stmt->bindParam(":email", $this->email, PDO::PARAM_STR);
+        $stmt->bindParam(":senha", $senha_hash, PDO::PARAM_STR);
+        $stmt->bindParam(":cargo", $this->funcao, PDO::PARAM_STR);
+        $stmt->bindParam(":telefone", $this->telefone, PDO::PARAM_STR);
+        $stmt->bindParam(":cep", $this->cep, PDO::PARAM_STR);
+        $stmt->bindParam(":foto", $this->foto, PDO::PARAM_STR);
+        $stmt->bindParam(":numero", $this->numero, PDO::PARAM_INT);
 
         $resultado = $stmt->execute();
         return ['sucesso' => $resultado, 'mensagem' => $resultado ? 'Funcionário cadastrado com sucesso.' : 'Erro ao cadastrar.'];
-
 
 
     }
@@ -77,11 +76,11 @@ class Funcionario
         $sql = "UPDATE funcionario SET nome = :nome, email = :email,
                 senha = :senha, cargo = :cargo WHERE CPF = :CPF";
         $stmt = $this->bd->prepare($sql);
-        $stmt->bindParam(":nome",  $this->nome,  PDO::PARAM_STR);
+        $stmt->bindParam(":nome", $this->nome, PDO::PARAM_STR);
         $stmt->bindParam(":email", $this->email, PDO::PARAM_STR);
-        $stmt->bindParam(":senha", $senha_hash,  PDO::PARAM_STR);
+        $stmt->bindParam(":senha", $senha_hash, PDO::PARAM_STR);
         $stmt->bindParam(":cargo", $this->cargo, PDO::PARAM_STR);
-        $stmt->bindParam(":CPF",   $this->CPF,   PDO::PARAM_STR);
+        $stmt->bindParam(":CPF", $this->CPF, PDO::PARAM_STR);
         return $stmt->execute();
     }
 
@@ -110,4 +109,31 @@ class Funcionario
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+    public function login()
+    {
+
+        $sql = "SELECT * FROM funcionario WHERE Email_Fun = :email";
+        $stmt = $this->bd->prepare($sql);
+        $stmt->bindParam(":email", $this->email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+//        var_dump(password_verify($this->senha, $resultado->Senha_Fun));
+//        die( );
+
+        if ($resultado) {
+            if (password_verify($this->senha, $resultado->Senha_Fun)) {
+                session_start();
+                $_SESSION["usuario_logado"] = $resultado;
+                header("Location: index.php");
+                exit();
+            } else {
+                header("Location: login.php");
+                exit();
+            }
+        }
+    }
 }
+
