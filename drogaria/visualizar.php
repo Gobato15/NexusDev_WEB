@@ -1,14 +1,15 @@
 <?php
-include_once("../objetos/laboratorioController.php");
+ob_start();
+include_once("../Objetos/drogariaController.php");
 
-$controller = new laboratorioController();
-$lab = null;
+$controller = new drogariaController();
+$drog = null;
 
 if (isset($_GET["id"])) {
-    $lab = $controller->localizarLaboratorio($_GET["id"]);
+    $drog = $controller->localizarDrogaria($_GET["id"]);
 }
 
-if (!$lab) {
+if (!$drog) {
     header("Location: index.php");
     exit();
 }
@@ -18,7 +19,7 @@ if (!$lab) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualizar Laboratório – PharmaPulse</title>
+  <title>Visualizar Drogaria – PharmaPulse</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,8 +40,8 @@ if (!$lab) {
       <ul class="nav nav-pills flex-column mb-auto gap-2">
         <li class="nav-item"><a href="../Medicamento/index.php" class="nav-link"><span class="fs-5">💊</span> Medicamentos</a></li>
         <li class="nav-item"><a href="../funcionario/index.php" class="nav-link"><span class="fs-5">👥</span> Funcionários</a></li>
-        <li class="nav-item"><a href="index.php" class="nav-link active"><span class="fs-5">🔬</span> Laboratórios</a></li>
-        <li class="nav-item"><a href="../drogaria/index.php" class="nav-link"><span class="fs-5">🏪</span> Drogarias</a></li>
+        <li class="nav-item"><a href="../laboratorio/index.php" class="nav-link"><span class="fs-5">🔬</span> Laboratórios</a></li>
+        <li class="nav-item"><a href="index.php" class="nav-link active"><span class="fs-5">🏪</span> Drogarias</a></li>
         <li class="nav-item"><a href="../Compra/index.php" class="nav-link"><span class="fs-5">🛒</span> Compras</a></li>
         <li class="nav-item"><a href="../Venda/index.php" class="nav-link"><span class="fs-5">📈</span> Vendas</a></li>
       </ul>
@@ -56,59 +57,52 @@ if (!$lab) {
       <div class="d-flex align-items-center gap-3">
         <button class="btn btn-outline-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><span class="fs-4">☰</span></button>
         <div>
-          <h1 class="display-6 fw-bold m-0" style="color:#1a1c4b;">Ficha do Laboratório</h1>
-          <p class="text-secondary mb-0">Detalhes cadastrais e rastreamento.</p>
+          <h1 class="display-6 fw-bold m-0" style="color:#1a1c4b;">Ficha da Drogaria</h1>
+          <p class="text-secondary mb-0">Detalhes cadastrais e localização da unidade.</p>
         </div>
       </div>
       <a href="index.php" class="btn btn-outline-secondary px-4 fw-bold">← Voltar</a>
     </div>
 
     <div class="card card-pharma" style="max-width: 800px; margin: 0 auto;">
-      <!-- Header colorido -->
-      <div class="p-4 text-white d-flex align-items-center gap-4" style="background: linear-gradient(135deg,#1a1c4b 0%,#2c2f8a 100%); border-radius: 12px 12px 0 0;">
-        <div style="width:80px;height:80px;border-radius:16px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;overflow:hidden;">
-          <?php if (!empty($lab['Foto_Lab'])): ?>
-            <img src="../uploads/laboratorios/<?= htmlspecialchars($lab['Foto_Lab']) ?>" alt="Logo" style="width:100%;height:100%;object-fit:cover;">
-          <?php else: ?>🔬<?php endif; ?>
-        </div>
+      <div class="p-4 text-white d-flex align-items-center gap-4" style="background: linear-gradient(135deg,#102c26 0%,#1a3d35 100%); border-radius: 12px 12px 0 0;">
+        <div style="width:80px;height:80px;border-radius:16px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;">🏪</div>
         <div>
           <span class="badge bg-success mb-1">● Unidade Ativa</span>
-          <h2 class="fw-bold mb-0 text-white" style="font-size:1.5rem;"><?= htmlspecialchars($lab['Nome_Lab']) ?></h2>
-          <p class="mb-0 opacity-75 small">Registrado no sistema PharmaPulse</p>
+          <h2 class="fw-bold mb-0 text-white" style="font-size:1.5rem;"><?= htmlspecialchars($drog['Nome_Drog'] ?? '') ?></h2>
+          <p class="mb-0 opacity-75 small">Registrada no sistema PharmaPulse ERP</p>
         </div>
       </div>
-      <!-- Corpo -->
       <div class="card-body p-4">
         <div class="row g-4">
           <div class="col-md-6">
-            <p class="text-secondary fw-bold small text-uppercase mb-1">Razão Social</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['Nome_Lab']) ?></p>
+            <p class="text-secondary fw-bold small text-uppercase mb-1">Nome da Unidade</p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['Nome_Drog'] ?? '') ?></p>
           </div>
           <div class="col-md-6">
             <p class="text-secondary fw-bold small text-uppercase mb-1">CNPJ</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['CNPJ_Lab']) ?></p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['CNPJ_Drog'] ?? '') ?></p>
           </div>
           <div class="col-md-6">
             <p class="text-secondary fw-bold small text-uppercase mb-1">E-mail Comercial</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['Email_Lab']) ?></p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['Email_Drog'] ?? '') ?></p>
           </div>
           <div class="col-md-6">
-            <p class="text-secondary fw-bold small text-uppercase mb-1">Telefone</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['Telefone_Lab']) ?></p>
+            <p class="text-secondary fw-bold small text-uppercase mb-1">Telefone de Contato</p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['Telefone_Drog'] ?? '') ?></p>
           </div>
           <div class="col-md-6">
             <p class="text-secondary fw-bold small text-uppercase mb-1">CEP</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['Cep_Lab']) ?></p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['Cep_Drog'] ?? '') ?></p>
           </div>
           <div class="col-md-6">
             <p class="text-secondary fw-bold small text-uppercase mb-1">Número</p>
-            <p class="fw-bold mb-0"><?= htmlspecialchars($lab['Num_Lab']) ?></p>
+            <p class="fw-bold mb-0"><?= htmlspecialchars($drog['Num_Drog'] ?? '') ?></p>
           </div>
         </div>
       </div>
-      <!-- Footer -->
       <div class="card-footer bg-light d-flex justify-content-end gap-2 p-3">
-        <a href="atualizar.php?alterar=<?= $lab['CNPJ_Lab'] ?>" class="btn btn-pharma-primary px-4 fw-bold">✏ Editar Laboratório</a>
+        <a href="atualizar.php?alterar=<?= $drog['CNPJ_Drog'] ?>" class="btn btn-pharma-primary px-4 fw-bold">✏ Editar Drogaria</a>
       </div>
     </div>
   </main>
@@ -116,3 +110,4 @@ if (!$lab) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php ob_end_flush(); ?>

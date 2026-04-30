@@ -36,6 +36,16 @@ class Funcionario
         return $resultado->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function pesquisarPorNome($nome)
+    {
+        $like = "%$nome%";
+        $sql = "SELECT * FROM funcionario WHERE Nome_Fun LIKE :nome";
+        $stmt = $this->bd->prepare($sql);
+        $stmt->bindParam(':nome', $like, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function cadastrar()
     {
         $existente = $this->buscafuncionario($this->CPF);
@@ -73,13 +83,14 @@ class Funcionario
     public function atualizar()
     {
         $senha_hash = password_hash($this->senha, PASSWORD_DEFAULT);
-        $sql = "UPDATE funcionario SET nome = :nome, email = :email,
-                senha = :senha, cargo = :cargo WHERE CPF = :CPF";
+        $sql = "UPDATE funcionario SET Nome_Fun = :nome, Email_Fun = :email,
+                Senha_Fun = :senha, Funcao = :funcao, imagem = :foto WHERE CPF = :CPF";
         $stmt = $this->bd->prepare($sql);
         $stmt->bindParam(":nome", $this->nome, PDO::PARAM_STR);
         $stmt->bindParam(":email", $this->email, PDO::PARAM_STR);
         $stmt->bindParam(":senha", $senha_hash, PDO::PARAM_STR);
-        $stmt->bindParam(":cargo", $this->funcao, PDO::PARAM_STR);
+        $stmt->bindParam(":funcao", $this->funcao, PDO::PARAM_STR);
+        $stmt->bindParam(":foto", $this->foto, PDO::PARAM_STR);
         $stmt->bindParam(":CPF", $this->CPF, PDO::PARAM_STR);
         return $stmt->execute();
     }
@@ -110,7 +121,7 @@ class Funcionario
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function login()
+    public function login($redirect = "index.php")
     {
 
         $sql = "SELECT * FROM funcionario WHERE Email_Fun = :email";
@@ -120,16 +131,13 @@ class Funcionario
 
         $resultado = $stmt->fetch(PDO::FETCH_OBJ);
 
-        //        var_dump(password_verify($this->senha, $resultado->Senha_Fun));
-//        die( );
-
         if ($resultado) {
             if (password_verify($this->senha, $resultado->Senha_Fun)) {
                 if (session_status() !== PHP_SESSION_ACTIVE)
                     session_start();
                 $_SESSION["login"] = $resultado;
                 $_SESSION["cpf"] = $resultado->CPF;
-                header("Location: index.php");
+                header("Location: " . $redirect);
                 exit();
             } else {
                 header("Location: login.php");

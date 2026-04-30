@@ -7,6 +7,7 @@ class Compra
     public $Data_Compra;
     public $CPF;
     public $CNPJ_Lab;
+    public $Finalizada;
     public $bd;
 
     public function __construct($bd)
@@ -16,10 +17,39 @@ class Compra
 
     public function lerTodos()
     {
-        $sql = "SELECT * FROM compra";
+        $sql = "SELECT c.*, l.Nome_Lab
+                FROM compra c
+                LEFT JOIN laboratorio l ON c.CNPJ_Lab = l.CNPJ_Lab
+                ORDER BY c.NotaFiscal_Entrada DESC";
         $resultado = $this->bd->query($sql);
 
         return $resultado->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function filtrar($nf, $cnpj_lab, $status, $data_inicio, $data_fim)
+    {
+        $sql = "SELECT c.*, l.Nome_Lab
+                FROM compra c
+                LEFT JOIN laboratorio l ON c.CNPJ_Lab = l.CNPJ_Lab
+                WHERE 1=1";
+
+        if ($nf)                              $sql .= " AND c.NotaFiscal_Entrada = :nf";
+        if ($cnpj_lab)                        $sql .= " AND c.CNPJ_Lab = :cnpj_lab";
+        if ($status !== '' && $status !== null) $sql .= " AND c.Finalizada = :status";
+        if ($data_inicio)                     $sql .= " AND c.Data_Compra >= :data_inicio";
+        if ($data_fim)                        $sql .= " AND c.Data_Compra <= :data_fim";
+
+        $sql .= " ORDER BY c.NotaFiscal_Entrada DESC";
+
+        $stmt = $this->bd->prepare($sql);
+        if ($nf)                              $stmt->bindParam(':nf',          $nf,          PDO::PARAM_INT);
+        if ($cnpj_lab)                        $stmt->bindParam(':cnpj_lab',    $cnpj_lab,    PDO::PARAM_STR);
+        if ($status !== '' && $status !== null) $stmt->bindParam(':status',   $status,      PDO::PARAM_INT);
+        if ($data_inicio)                     $stmt->bindParam(':data_inicio', $data_inicio, PDO::PARAM_STR);
+        if ($data_fim)                        $stmt->bindParam(':data_fim',    $data_fim,    PDO::PARAM_STR);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function pesquisarCompra($NotaFiscal_Entrada)
@@ -122,5 +152,22 @@ class Compra
         $resultado->execute();
 
         return $resultado->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function finalizarStatus($NotaFiscal_Entrada)
+    {
+        $sql = "UPDATE compra SET Finalizada = 1 WHERE NotaFiscal_Entrada = :NotaFiscal_Entrada";
+        $stmt = $this->bd->prepare($sql);
+        $stmt->bindParam(":NotaFiscal_Entrada", $NotaFiscal_Entrada, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function salvarRascunho($NotaFiscal_Entrada, $Valor_Total)
+    {
+        $sql = "UPDATE compra SET Valor_Total = :Valor_Total WHERE NotaFiscal_Entrada = :NotaFiscal_Entrada";
+        $stmt = $this->bd->prepare($sql);
+        $stmt->bindParam(":Valor_Total", $Valor_Total);
+        $stmt->bindParam(":NotaFiscal_Entrada", $NotaFiscal_Entrada, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
